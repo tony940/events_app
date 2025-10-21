@@ -66,22 +66,24 @@ class _LoginBodyState extends State<LoginBody> {
                           GestureDetector(
                             onTap: () => switchToPage(0),
                             child: Text(
-                              'Login with email',
+                              'Email',
                               style: AppTextStyles.font114BlackMedium.copyWith(
-                                decoration: currentPage == 0
-                                    ? TextDecoration.underline
-                                    : TextDecoration.none,
-                                color: currentPage == 0
-                                    ? AppColors.primaryColor
-                                    : Colors.black,
-                              ),
+                                  decoration: currentPage == 0
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                  color: currentPage == 0
+                                      ? AppColors.primaryColor
+                                      : Colors.black,
+                                  fontWeight: currentPage == 0
+                                      ? FontWeight.bold
+                                      : FontWeight.normal),
                             ),
                           ),
                           const Spacer(),
                           GestureDetector(
                             onTap: () => switchToPage(1),
                             child: Text(
-                              'Login with phone',
+                              'Phone',
                               style: AppTextStyles.font114BlackMedium.copyWith(
                                 decoration: currentPage == 1
                                     ? TextDecoration.underline

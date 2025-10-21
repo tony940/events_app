@@ -66,7 +66,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                   GestureDetector(
                     onTap: () => switchToPage(0),
                     child: Text(
-                      'Sign up with email',
+                      'Email',
                       style: AppTextStyles.font114BlackMedium.copyWith(
                         decoration: currentPage == 0
                             ? TextDecoration.underline
@@ -74,6 +74,9 @@ class _SignUpBodyState extends State<SignUpBody> {
                         color: currentPage == 0
                             ? AppColors.primaryColor
                             : Colors.black,
+                        fontWeight: currentPage == 0
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                       ),
                     ),
                   ),
@@ -81,7 +84,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                   GestureDetector(
                     onTap: () => switchToPage(1),
                     child: Text(
-                      'Sign up with phone',
+                      'Phone number',
                       style: AppTextStyles.font114BlackMedium.copyWith(
                         decoration: currentPage == 1
                             ? TextDecoration.underline
