@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:events_app/core/routing/app_router.dart';
 import 'package:events_app/core/services/shared_pref_service.dart';
 import 'package:events_app/core/themes/app_colors.dart';
@@ -11,7 +12,12 @@ void main() {
   ScreenUtil.ensureScreenSize();
   //shared pref init
   SharedPreferencesService().init();
-  runApp(const EventsApp());
+  runApp(
+    DevicePreview(
+      enabled: false,
+      builder: (context) => EventsApp(),
+    ),
+  );
 }
 
 class EventsApp extends StatelessWidget {
@@ -25,6 +31,9 @@ class EventsApp extends StatelessWidget {
       child: MaterialApp.router(
         routerConfig: AppRouter.router,
         debugShowCheckedModeBanner: false,
+        useInheritedMediaQuery: true,
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
         theme: ThemeData(
           scaffoldBackgroundColor: AppColors.white,
         ),

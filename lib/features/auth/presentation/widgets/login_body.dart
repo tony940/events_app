@@ -19,105 +19,223 @@ class LoginBody extends StatefulWidget {
 
 class _LoginBodyState extends State<LoginBody> {
   bool obsecureText = true;
+  final PageController _pageController = PageController();
+  int currentPage = 0; // 0 = email, 1 = phone
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void switchToPage(int index) {
+    setState(() {
+      currentPage = index;
+    });
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            /// Animated logo
-            LoginAnimatedLogo(),
+        child: SingleChildScrollView(
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              /// Animated logo
+              const LoginAnimatedLogo(),
 
-            /// Login form positioned just below logo
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: EdgeInsets.only(
-                    left: 16.w, right: 16.w, top: 80.h), // small gap below logo
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'login',
-                      style: AppTextStyles.font18BlackBold,
-                    ),
-                    verticalSpace(10),
-                    AppTextFormField(
-                      hintText: 'Email',
-                      labelText: 'Email',
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    AppTextFormField(
-                      hintText: 'Password',
-                      labelText: 'Password',
-                      obscureText: obsecureText,
-                      suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              obsecureText = !obsecureText;
-                            });
-                          },
-                          child: obsecureText
-                              ? Icon(Icons.visibility_off_outlined)
-                              : Icon(Icons.visibility_outlined)),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        return null;
-                      },
-                    ),
-                    verticalSpace(20),
-                    AppButton(
-                      buttonText: ('Login'),
-                      onPressed: () {},
-                    ),
-                    verticalSpace(20),
-                    OrDivider(),
-                    verticalSpace(20),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: AppButton(
-                            buttonText: 'login as guest',
-                            onPressed: () {},
-                            height: 40.h,
-                            borderRadius: BorderRadius.circular(50.r),
+              /// Login form
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 200.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // === Switch Buttons ===
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () => switchToPage(0),
+                            child: Text(
+                              'Login with email',
+                              style: AppTextStyles.font114BlackMedium.copyWith(
+                                decoration: currentPage == 0
+                                    ? TextDecoration.underline
+                                    : TextDecoration.none,
+                                color: currentPage == 0
+                                    ? AppColors.primaryColor
+                                    : Colors.black,
+                              ),
+                            ),
                           ),
-                        ),
-                        horizontalSpace(10),
-                        Expanded(
-                          child: AppButton(
-                            buttonText: 'Sign up',
-                            onPressed: () {
-                              context.push('/signUp');
-                            },
-                            backgroundColor: AppColors.secondaryColor,
-                            height: 40.h,
-                            borderRadius: BorderRadius.circular(50.r),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: () => switchToPage(1),
+                            child: Text(
+                              'Login with phone',
+                              style: AppTextStyles.font114BlackMedium.copyWith(
+                                decoration: currentPage == 1
+                                    ? TextDecoration.underline
+                                    : TextDecoration.none,
+                                color: currentPage == 1
+                                    ? AppColors.primaryColor
+                                    : Colors.black,
+                              ),
+                            ),
                           ),
+                        ],
+                      ),
+                      verticalSpace(20),
+
+                      // === PageView (Email / Phone) ===
+                      SizedBox(
+                        height: 0.5.sh,
+                        child: PageView(
+                          controller: _pageController,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: [
+                            /// ========== LOGIN WITH EMAIL ==========
+                            Column(
+                              children: [
+                                AppTextFormField(
+                                  hintText: 'Email',
+                                  labelText: 'Email',
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your email';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(height: 10.h),
+                                AppTextFormField(
+                                  hintText: 'Password',
+                                  labelText: 'Password',
+                                  obscureText: obsecureText,
+                                  suffixIcon: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        obsecureText = !obsecureText;
+                                      });
+                                    },
+                                    child: Icon(
+                                      obsecureText
+                                          ? Icons.visibility_off_outlined
+                                          : Icons.visibility_outlined,
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your password';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                verticalSpace(20),
+                                AppButton(
+                                  buttonText: 'Login',
+                                  onPressed: () {},
+                                ),
+                                verticalSpace(20),
+                                const OrDivider(),
+                                verticalSpace(20),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: AppButton(
+                                        buttonText: 'Login as guest',
+                                        onPressed: () {},
+                                        height: 40.h,
+                                        borderRadius:
+                                            BorderRadius.circular(50.r),
+                                      ),
+                                    ),
+                                    horizontalSpace(10),
+                                    Expanded(
+                                      child: AppButton(
+                                        buttonText: 'Sign up',
+                                        onPressed: () {
+                                          context.push('/signUp');
+                                        },
+                                        backgroundColor:
+                                            AppColors.secondaryColor,
+                                        height: 40.h,
+                                        borderRadius:
+                                            BorderRadius.circular(50.r),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+
+                            /// ========== LOGIN WITH PHONE ==========
+                            Column(
+                              children: [
+                                AppTextFormField(
+                                  hintText: 'Phone number',
+                                  labelText: 'Phone number',
+                                  keyboardType: TextInputType.phone,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your phone number';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(height: 10.h),
+                                AppTextFormField(
+                                  hintText: 'Password',
+                                  labelText: 'Password',
+                                  obscureText: obsecureText,
+                                  suffixIcon: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        obsecureText = !obsecureText;
+                                      });
+                                    },
+                                    child: Icon(
+                                      obsecureText
+                                          ? Icons.visibility_off_outlined
+                                          : Icons.visibility_outlined,
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your password';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                verticalSpace(20),
+                                AppButton(
+                                  buttonText: 'Login with Phone',
+                                  onPressed: () {},
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ).animate().fade(
-                  delay: Duration(seconds: 1),
-                  duration: Duration(seconds: 1),
-                ),
-          ],
+              ).animate().fade(
+                    delay: const Duration(seconds: 1),
+                    duration: const Duration(seconds: 1),
+                  ),
+            ],
+          ),
         ),
       ),
     );

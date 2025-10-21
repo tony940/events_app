@@ -1,4 +1,4 @@
-import 'package:events_app/features/auth/presentation/pages/sign_up.dart';
+import 'package:events_app/features/auth/presentation/widgets/sign_up_body.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatelessWidget {
