@@ -5,6 +5,7 @@ import 'package:events_app/features/onboarding/presentation/widgets/on_boardin_r
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
@@ -39,22 +40,30 @@ class OnBoardingScreen extends StatelessWidget {
                   ).animate().fade(
                         duration: Duration(seconds: 2),
                       ),
-                  Image.asset('assets/images/ticket.png')
-                      .animate(
-                        onPlay: (controller) => controller.repeat(),
+                  Center(
+                    child: Expanded(
+                      child: Image.asset(
+                        'assets/images/ticket.png',
                       )
-                      .shake(
-                        hz: 1,
-                        duration: Duration(seconds: 1),
-                      ),
+                          .animate(
+                            onPlay: (controller) => controller.repeat(),
+                          )
+                          .shake(
+                            hz: 1,
+                            duration: Duration(seconds: 1),
+                          ),
+                    ),
+                  ),
                   Spacer(),
                   AppButton(
-                      buttonText: 'Get started',
-                      onPressed: () {
-                        // raise flag of onBoarding done
-                        SharedPreferencesService()
-                            .saveData('onBoardingDone', true);
-                      }),
+                    buttonText: 'Get started',
+                    onPressed: () {
+                      // raise flag of onBoarding done
+                      SharedPreferencesService()
+                          .saveData('onBoardingDone', true);
+                      context.pushReplacement('/login');
+                    },
+                  ),
                 ],
               ),
             ),

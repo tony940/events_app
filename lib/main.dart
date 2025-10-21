@@ -1,5 +1,6 @@
 import 'package:events_app/core/routing/app_router.dart';
 import 'package:events_app/core/services/shared_pref_service.dart';
+import 'package:events_app/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -24,6 +25,9 @@ class EventsApp extends StatelessWidget {
       child: MaterialApp.router(
         routerConfig: AppRouter.router,
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: AppColors.white,
+        ),
       ),
     );
   }
