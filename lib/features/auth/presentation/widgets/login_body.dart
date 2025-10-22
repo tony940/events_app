@@ -156,7 +156,10 @@ class _LoginBodyState extends State<LoginBody> {
                                     Expanded(
                                       child: AppButton(
                                         buttonText: 'Login as guest',
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          context
+                                              .pushReplacement('/mainScaffold');
+                                        },
                                         height: 40.h,
                                         borderRadius:
                                             BorderRadius.circular(50.r),

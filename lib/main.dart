@@ -35,6 +35,14 @@ class EventsApp extends StatelessWidget {
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
         theme: ThemeData(
+          drawerTheme: DrawerThemeData(
+            backgroundColor: AppColors.white,
+          ),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: AppColors.primaryColor,
+            elevation: 0,
+            foregroundColor: Colors.white,
+          ),
           scaffoldBackgroundColor: AppColors.white,
         ),
       ),
